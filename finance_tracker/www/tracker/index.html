@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#171717">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="/assets/finance_tracker/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/finance_tracker/images/icon-192.png">
+
+    <title>Finance Tracker</title>
+
+    <!-- PWA CSS (scoped) -->
+    <link rel="stylesheet" href="/assets/finance_tracker/css/pwa_mobile.css">
+</head>
+<body>
+    <!-- Scoped wrapper for PWA styles -->
+    <div class="finance-tracker-pwa">
+        <!-- Header with sync status -->
+        <div class="pwa-header">
+            <h1>💰 Finance Tracker</h1>
+            <div class="sync-status">
+                <span class="sync-indicator offline" id="syncIndicator"></span>
+                <span id="syncText">Initializing...</span>
+                <span id="pendingCount" style="margin-left: 8px;"></span>
+            </div>
+        </div>
+
+        <!-- Pull to refresh indicator -->
+        <div class="ptr-indicator" id="ptrIndicator">
+            <span>↓ Pull to refresh</span>
+        </div>
+
+        <!-- Main content area -->
+        <div class="pwa-container">
+            <!-- Loading state -->
+            <div class="loading" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Loading transactions...</p>
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">📊</div>
+                <h3>No Transactions Yet</h3>
+                <p>Tap the + button to add your first transaction</p>
+            </div>
+
+            <!-- Transaction list -->
+            <div id="transactionList" style="padding: 16px; display: none;">
+                <!-- Transactions will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="addTransactionBtn" aria-label="Add Transaction">
+            +
+        </button>
+
+        <!-- Transaction Form Modal (Hidden by default) -->
+        <div id="transactionModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; padding: 20px; display: flex; align-items: flex-end;">
+            <div class="card" style="width: 100%; max-width: 600px; margin: 0 auto; max-height: 90vh; overflow-y: auto; border-radius: 16px 16px 0 0;">
+                <h2 style="margin-bottom: 20px;">Add Transaction</h2>
+
+                <!-- Transaction Type Selection -->
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Type</label>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary type-btn" data-type="Expense" style="flex: 1;">💸 Expense</button>
+                        <button class="btn btn-secondary type-btn" data-type="Income" style="flex: 1;">💰 Income</button>
+                        <button class="btn btn-secondary type-btn" data-type="Transfer" style="flex: 1;">🔄 Transfer</button>
+                    </div>
+                </div>
+
+                <!-- Amount Input -->
+                <div style="margin-bottom: 16px;">
+                    <label for="amountInput" style="display: block; margin-bottom: 8px; font-weight: 500;">Amount</label>
+                    <input type="number" id="amountInput" placeholder="0.00" step="0.01" min="0" required style="font-size: 24px; text-align: right;">
+                </div>
+
+                <!-- Category Selection -->
+                <div style="margin-bottom: 16px;">
+                    <label for="categoryInput" style="display: block; margin-bottom: 8px; font-weight: 500;">Category</label>
+                    <input type="text" id="categoryInput" placeholder="Select category" required readonly style="cursor: pointer;">
+                </div>
+
+                <!-- Date Input -->
+                <div style="margin-bottom: 16px;">
+                    <label for="dateInput" style="display: block; margin-bottom: 8px; font-weight: 500;">Date</label>
+                    <input type="date" id="dateInput" required>
+                </div>
+
+                <!-- Description -->
+                <div style="margin-bottom: 16px;">
+                    <label for="descriptionInput" style="display: block; margin-bottom: 8px; font-weight: 500;">Description (Optional)</label>
+                    <textarea id="descriptionInput" placeholder="Add notes..." rows="3"></textarea>
+                </div>
+
+                <!-- Photo Upload -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Receipt (Optional)</label>
+                    <input type="file" id="photoInput" accept="image/*" capture="environment" style="display: none;">
+                    <button type="button" class="btn btn-secondary" id="photoBtn" style="width: 100%;">
+                        📷 Add Photo
+                    </button>
+                    <div id="photoPreview" style="margin-top: 12px; display: none;">
+                        <img id="photoPreviewImg" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px;">
+                        <button type="button" class="btn btn-secondary" id="removePhotoBtn" style="width: 100%; margin-top: 8px;">
+                            Remove Photo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" style="flex: 1;">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveBtn" style="flex: 1;">
+                        Save Transaction
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load PWA JavaScript -->
+    <script src="/assets/finance_tracker/js/offline_manager.js"></script>
+    <script src="/assets/finance_tracker/js/sync_manager.js"></script>
+    <script src="/assets/finance_tracker/js/tracker_ui.js"></script>
+    <script src="/assets/finance_tracker/js/photo_compressor.js"></script>
+</body>
+</html>

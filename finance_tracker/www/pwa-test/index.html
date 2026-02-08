@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#171717">
+    <link rel="manifest" href="/assets/finance_tracker/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/finance_tracker/images/icon-192.png">
+    <title>Finance Tracker PWA - Phase 1 Tests</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #171717;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.8;
+        }
+
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .test-section h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #171717;
+        }
+
+        .test-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #171717;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #000;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status.pending {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .status.success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .status.error {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .status.info {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .output {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+            padding: 4px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .log-time {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .log-success {
+            color: #2E7D32;
+        }
+
+        .log-error {
+            color: #C62828;
+        }
+
+        .log-info {
+            color: #1565C0;
+        }
+
+        .install-prompt {
+            background: #E3F2FD;
+            border: 2px solid #1565C0;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .install-prompt h3 {
+            color: #1565C0;
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            background: #f8f8f8;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #171717;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+    </style>
+
+    <!-- Load PWA JavaScript Files -->
+    <script src="/assets/finance_tracker/js/offline_manager.js"></script>
+    <script src="/assets/finance_tracker/js/sync_manager.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Finance Tracker PWA - Phase 1 Tests</h1>
+            <p>IndexedDB Operations & PWA Installation Testing</p>
+        </div>
+
+        <!-- PWA Installation Test -->
+        <div class="test-section">
+            <h2>1️⃣ PWA Installation</h2>
+            <div class="test-row">
+                <button id="checkPwaBtn">Check PWA Support</button>
+                <button id="installPwaBtn" disabled>Install PWA</button>
+                <span id="pwaStatus" class="status pending">Not Checked</span>
+            </div>
+            <div id="installInstructions"></div>
+        </div>
+
+        <!-- IndexedDB Initialization Test -->
+        <div class="test-section">
+            <h2>2️⃣ IndexedDB Initialization</h2>
+            <div class="test-row">
+                <button id="initDbBtn">Initialize Database</button>
+                <span id="dbStatus" class="status pending">Not Initialized</span>
+            </div>
+        </div>
+
+        <!-- Transaction CRUD Tests -->
+        <div class="test-section">
+            <h2>3️⃣ Transaction CRUD Operations</h2>
+            <div class="test-row">
+                <button id="createTxnBtn" disabled>Create Transaction</button>
+                <button id="readTxnBtn" disabled>Read Transactions</button>
+                <button id="updateTxnBtn" disabled>Update Status</button>
+                <span id="txnStatus" class="status pending">DB Not Ready</span>
+            </div>
+            <div class="stats" id="txnStats"></div>
+        </div>
+
+        <!-- Cache Tests -->
+        <div class="test-section">
+            <h2>4️⃣ Cache Operations</h2>
+            <div class="test-row">
+                <button id="cachePartiesBtn" disabled>Cache Parties</button>
+                <button id="cacheCategoriesBtn" disabled>Cache Categories</button>
+                <button id="readCacheBtn" disabled>Read Cache</button>
+                <span id="cacheStatus" class="status pending">DB Not Ready</span>
+            </div>
+        </div>
+
+        <!-- Settings Tests -->
+        <div class="test-section">
+            <h2>5️⃣ Settings Operations</h2>
+            <div class="test-row">
+                <button id="setSettingBtn" disabled>Set Setting</button>
+                <button id="getSettingBtn" disabled>Get Setting</button>
+                <span id="settingsStatus" class="status pending">DB Not Ready</span>
+            </div>
+        </div>
+
+        <!-- Console Log -->
+        <div class="test-section">
+            <h2>📋 Test Log</h2>
+            <div id="console" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test Logger
+        const logger = {
+            log(message, type = 'info') {
+                const console = document.getElementById('console');
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+
+                const time = new Date().toLocaleTimeString();
+                const timeSpan = `<span class="log-time">[${time}]</span>`;
+                const messageSpan = `<span class="log-${type}">${message}</span>`;
+
+                entry.innerHTML = `${timeSpan} ${messageSpan}`;
+                console.insertBefore(entry, console.firstChild);
+            },
+            success(message) { this.log('✅ ' + message, 'success'); },
+            error(message) { this.log('❌ ' + message, 'error'); },
+            info(message) { this.log('ℹ️ ' + message, 'info'); }
+        };
+
+        // Status updater
+        function updateStatus(elementId, status, text) {
+            const el = document.getElementById(elementId);
+            el.className = `status ${status}`;
+            el.textContent = text;
+        }
+
+        // Button enabler
+        function enableButtons(ids) {
+            ids.forEach(id => {
+                document.getElementById(id).disabled = false;
+            });
+        }
+
+        // Stats updater
+        async function updateStats() {
+            if (!window.offlineManager || !window.offlineManager.db) return;
+
+            const pending = await window.offlineManager.getTransactionCountByStatus('pending');
+            const synced = await window.offlineManager.getTransactionCountByStatus('synced');
+            const failed = await window.offlineManager.getTransactionCountByStatus('failed');
+
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-value">${pending}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${synced}</div>
+                    <div class="stat-label">Synced</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${failed}</div>
+                    <div class="stat-label">Failed</div>
+                </div>
+            `;
+            document.getElementById('txnStats').innerHTML = statsHtml;
+        }
+
+        // Test 1: PWA Installation
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            logger.info('PWA install prompt ready');
+            document.getElementById('installPwaBtn').disabled = false;
+        });
+
+        document.getElementById('checkPwaBtn').addEventListener('click', () => {
+            logger.info('Checking PWA support...');
+
+            const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+            const hasServiceWorker = 'serviceWorker' in navigator;
+            const hasManifest = document.querySelector('link[rel="manifest"]') !== null;
+
+            if (hasServiceWorker) {
+                logger.success('Service Worker API supported');
+            } else {
+                logger.error('Service Worker API not supported');
+            }
+
+            if (isHttps) {
+                logger.success('Running on HTTPS');
+            } else {
+                logger.error('Not running on HTTPS');
+            }
+
+            if (hasManifest) {
+                logger.success('Web App Manifest detected');
+            } else {
+                logger.error('Web App Manifest not found');
+            }
+
+            if (isHttps && hasServiceWorker && hasManifest) {
+                updateStatus('pwaStatus', 'success', 'PWA Ready');
+                logger.success('PWA installation requirements met!');
+            } else {
+                updateStatus('pwaStatus', 'error', 'Not PWA Ready');
+                logger.error('PWA installation requirements not met');
+            }
+        });
+
+        document.getElementById('installPwaBtn').addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                logger.error('PWA install prompt not available');
+                logger.info('Try installing via browser menu: More → Install App');
+                return;
+            }
+
+            logger.info('Showing PWA install prompt...');
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+
+            if (outcome === 'accepted') {
+                logger.success('PWA installation accepted!');
+            } else {
+                logger.info('PWA installation dismissed');
+            }
+            deferredPrompt = null;
+        });
+
+        // Test 2: IndexedDB Initialization
+        document.getElementById('initDbBtn').addEventListener('click', async () => {
+            logger.info('Initializing IndexedDB...');
+            updateStatus('dbStatus', 'info', 'Initializing...');
+
+            try {
+                await window.offlineManager.init();
+                logger.success('IndexedDB initialized successfully');
+                logger.info(`Database: ${window.offlineManager.dbName}, Version: ${window.offlineManager.version}`);
+                updateStatus('dbStatus', 'success', 'Initialized');
+                updateStatus('txnStatus', 'info', 'Ready for Tests');
+                updateStatus('cacheStatus', 'info', 'Ready for Tests');
+                updateStatus('settingsStatus', 'info', 'Ready for Tests');
+
+                enableButtons([
+                    'createTxnBtn', 'readTxnBtn', 'updateTxnBtn',
+                    'cachePartiesBtn', 'cacheCategoriesBtn', 'readCacheBtn',
+                    'setSettingBtn', 'getSettingBtn'
+                ]);
+            } catch (error) {
+                logger.error(`IndexedDB initialization failed: ${error.message}`);
+                updateStatus('dbStatus', 'error', 'Failed');
+            }
+        });
+
+        // Test 3: Transaction CRUD
+        let lastTransactionId = null;
+
+        document.getElementById('createTxnBtn').addEventListener('click', async () => {
+            logger.info('Creating test transaction...');
+
+            const transaction = {
+                transaction_type: 'Expense',
+                category: 'Test Category',
+                amount: 100.00,
+                description: 'Test transaction ' + new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0],
+                party_type: 'Supplier',
+                party: 'Test Supplier'
+            };
+
+            try {
+                lastTransactionId = await window.offlineManager.saveTransaction(transaction);
+                logger.success(`Transaction created with ID: ${lastTransactionId}`);
+                updateStatus('txnStatus', 'success', 'Transaction Created');
+                await updateStats();
+            } catch (error) {
+                logger.error(`Failed to create transaction: ${error.message}`);
+                updateStatus('txnStatus', 'error', 'Create Failed');
+            }
+        });
+
+        document.getElementById('readTxnBtn').addEventListener('click', async () => {
+            logger.info('Reading transactions...');
+
+            try {
+                const all = await window.offlineManager.getAllTransactions(10);
+                const pending = await window.offlineManager.getPendingTransactions();
+
+                logger.success(`Retrieved ${all.length} total transactions`);
+                logger.success(`Retrieved ${pending.length} pending transactions`);
+
+                if (all.length > 0) {
+                    logger.info(`Latest transaction: ${JSON.stringify(all[0])}`);
+                }
+
+                updateStatus('txnStatus', 'success', `${all.length} Transactions`);
+                await updateStats();
+            } catch (error) {
+                logger.error(`Failed to read transactions: ${error.message}`);
+                updateStatus('txnStatus', 'error', 'Read Failed');
+            }
+        });
+
+        document.getElementById('updateTxnBtn').addEventListener('click', async () => {
+            if (!lastTransactionId) {
+                logger.error('No transaction to update. Create one first!');
+                return;
+            }
+
+            logger.info(`Updating transaction ${lastTransactionId} status...`);
+
+            try {
+                await window.offlineManager.updateTransactionStatus(
+                    lastTransactionId,
+                    'synced',
+                    { reference_doctype: 'Sales Invoice', reference_name: 'TEST-INV-001' }
+                );
+                logger.success(`Transaction ${lastTransactionId} marked as synced`);
+                updateStatus('txnStatus', 'success', 'Status Updated');
+                await updateStats();
+            } catch (error) {
+                logger.error(`Failed to update transaction: ${error.message}`);
+                updateStatus('txnStatus', 'error', 'Update Failed');
+            }
+        });
+
+        // Test 4: Cache Operations
+        document.getElementById('cachePartiesBtn').addEventListener('click', async () => {
+            logger.info('Caching test parties...');
+
+            const parties = [
+                { id: 'CUST-001', party_type: 'Customer', name: 'Test Customer 1', transaction_count: 5 },
+                { id: 'SUPP-001', party_type: 'Supplier', name: 'Test Supplier 1', transaction_count: 3 }
+            ];
+
+            try {
+                await window.offlineManager.cacheParties(parties);
+                logger.success(`Cached ${parties.length} parties`);
+                updateStatus('cacheStatus', 'success', 'Parties Cached');
+            } catch (error) {
+                logger.error(`Failed to cache parties: ${error.message}`);
+                updateStatus('cacheStatus', 'error', 'Cache Failed');
+            }
+        });
+
+        document.getElementById('cacheCategoriesBtn').addEventListener('click', async () => {
+            logger.info('Caching test categories...');
+
+            const categories = [
+                { id: 'CAT-001', category_type: 'Expense', category_name: 'Food', is_active: 1 },
+                { id: 'CAT-002', category_type: 'Income', category_name: 'Salary', is_active: 1 }
+            ];
+
+            try {
+                await window.offlineManager.cacheCategories(categories);
+                logger.success(`Cached ${categories.length} categories`);
+                updateStatus('cacheStatus', 'success', 'Categories Cached');
+            } catch (error) {
+                logger.error(`Failed to cache categories: ${error.message}`);
+                updateStatus('cacheStatus', 'error', 'Cache Failed');
+            }
+        });
+
+        document.getElementById('readCacheBtn').addEventListener('click', async () => {
+            logger.info('Reading cached data...');
+
+            try {
+                const customers = await window.offlineManager.getCachedParties('Customer');
+                const suppliers = await window.offlineManager.getCachedParties('Supplier');
+                const categories = await window.offlineManager.getCachedCategories();
+
+                logger.success(`Retrieved ${customers.length} customers`);
+                logger.success(`Retrieved ${suppliers.length} suppliers`);
+                logger.success(`Retrieved ${categories.length} categories`);
+                updateStatus('cacheStatus', 'success', 'Cache Read');
+            } catch (error) {
+                logger.error(`Failed to read cache: ${error.message}`);
+                updateStatus('cacheStatus', 'error', 'Read Failed');
+            }
+        });
+
+        // Test 5: Settings
+        document.getElementById('setSettingBtn').addEventListener('click', async () => {
+            logger.info('Setting test value...');
+
+            try {
+                await window.offlineManager.setSetting('last_sync', new Date().toISOString());
+                await window.offlineManager.setSetting('user_theme', 'dark');
+                logger.success('Settings saved');
+                updateStatus('settingsStatus', 'success', 'Settings Set');
+            } catch (error) {
+                logger.error(`Failed to set settings: ${error.message}`);
+                updateStatus('settingsStatus', 'error', 'Set Failed');
+            }
+        });
+
+        document.getElementById('getSettingBtn').addEventListener('click', async () => {
+            logger.info('Getting settings...');
+
+            try {
+                const lastSync = await window.offlineManager.getSetting('last_sync');
+                const theme = await window.offlineManager.getSetting('user_theme');
+
+                logger.success(`last_sync: ${lastSync}`);
+                logger.success(`user_theme: ${theme}`);
+                updateStatus('settingsStatus', 'success', 'Settings Retrieved');
+            } catch (error) {
+                logger.error(`Failed to get settings: ${error.message}`);
+                updateStatus('settingsStatus', 'error', 'Get Failed');
+            }
+        });
+
+        // Auto-run PWA check on load
+        window.addEventListener('load', () => {
+            logger.info('Phase 1 Test Suite Ready');
+            logger.info('Click "Check PWA Support" to begin');
+        });
+    </script>
+</body>
+</html>

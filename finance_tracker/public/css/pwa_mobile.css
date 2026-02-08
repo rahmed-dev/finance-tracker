@@ -1,0 +1,389 @@
+/**
+ * Finance Tracker PWA - Mobile Styles
+ * Touch-optimized, responsive CSS for offline PWA
+ * SCOPED: All styles apply only within .finance-tracker-pwa container
+ */
+
+/* Scoped Reset and Base */
+.finance-tracker-pwa * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.finance-tracker-pwa {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f5f5f5;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* Touch Targets - Minimum 44px */
+.finance-tracker-pwa button,
+.finance-tracker-pwa a,
+.finance-tracker-pwa input[type="button"],
+.finance-tracker-pwa input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* PWA Header */
+.finance-tracker-pwa .pwa-header {
+    background: #171717;
+    color: white;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.finance-tracker-pwa .pwa-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Sync Status */
+.finance-tracker-pwa .sync-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-top: 4px;
+    opacity: 0.9;
+}
+
+.finance-tracker-pwa .sync-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.finance-tracker-pwa .sync-indicator.online {
+    background: #10B981;
+}
+
+.finance-tracker-pwa .sync-indicator.syncing {
+    background: #F59E0B;
+    animation: pulse 1s infinite;
+}
+
+.finance-tracker-pwa .sync-indicator.offline {
+    background: #6B7280;
+}
+
+.finance-tracker-pwa .sync-indicator.error {
+    background: #EF4444;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Cards */
+.finance-tracker-pwa .card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Transaction Cards */
+.finance-tracker-pwa .transaction-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid #ddd;
+    position: relative;
+}
+
+.finance-tracker-pwa .transaction-card.income {
+    border-left-color: #10B981;
+}
+
+.finance-tracker-pwa .transaction-card.expense {
+    border-left-color: #EF4444;
+}
+
+.finance-tracker-pwa .transaction-card.transfer {
+    border-left-color: #3B82F6;
+}
+
+.finance-tracker-pwa .transaction-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.finance-tracker-pwa .transaction-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.finance-tracker-pwa .transaction-category {
+    font-weight: 500;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.finance-tracker-pwa .transaction-description {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.finance-tracker-pwa .transaction-amount {
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.finance-tracker-pwa .transaction-amount.income {
+    color: #10B981;
+}
+
+.finance-tracker-pwa .transaction-amount.expense {
+    color: #EF4444;
+}
+
+.finance-tracker-pwa .transaction-status {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #f5f5f5;
+    color: #666;
+}
+
+.finance-tracker-pwa .transaction-status.synced {
+    background: #D1FAE5;
+    color: #10B981;
+}
+
+.finance-tracker-pwa .transaction-status.pending {
+    background: #FFF3E0;
+    color: #FF9800;
+}
+
+.finance-tracker-pwa .transaction-status.failed {
+    background: #FFEBEE;
+    color: #F44336;
+}
+
+/* FAB (Floating Action Button) */
+.finance-tracker-pwa .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #171717;
+    color: white;
+    border: none;
+    font-size: 32px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: transform 0.2s, box-shadow 0.2s;
+    line-height: 1;
+}
+
+.finance-tracker-pwa .fab:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Form Elements */
+.finance-tracker-pwa input[type="text"],
+.finance-tracker-pwa input[type="number"],
+.finance-tracker-pwa input[type="email"],
+.finance-tracker-pwa input[type="tel"],
+.finance-tracker-pwa textarea,
+.finance-tracker-pwa select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.finance-tracker-pwa input:focus,
+.finance-tracker-pwa textarea:focus,
+.finance-tracker-pwa select:focus {
+    outline: none;
+    border-color: #171717;
+}
+
+/* Buttons */
+.finance-tracker-pwa .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 48px;
+}
+
+.finance-tracker-pwa .btn-primary {
+    background: #171717;
+    color: white;
+}
+
+.finance-tracker-pwa .btn-primary:active {
+    background: #000000;
+}
+
+.finance-tracker-pwa .btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.finance-tracker-pwa .btn-secondary:active {
+    background: #e0e0e0;
+}
+
+/* Loading State */
+.finance-tracker-pwa .loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+.finance-tracker-pwa .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #171717;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Empty State */
+.finance-tracker-pwa .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.finance-tracker-pwa .empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+/* Pull to Refresh Indicator */
+.finance-tracker-pwa .ptr-indicator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    transition: transform 0.2s;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1001;
+}
+
+.finance-tracker-pwa .ptr-indicator.visible {
+    transform: translateX(-50%) translateY(16px);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .finance-tracker-pwa {
+        background: #e0e0e0;
+    }
+
+    .finance-tracker-pwa .pwa-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        min-height: 100vh;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+}
+
+/* Safe Area (for notched devices) */
+@supports (padding: max(0px)) {
+    .finance-tracker-pwa .pwa-header {
+        padding-top: max(16px, env(safe-area-inset-top));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+
+    .finance-tracker-pwa .fab {
+        bottom: max(24px, env(safe-area-inset-bottom));
+        right: max(24px, env(safe-area-inset-right));
+    }
+}
+
+/* Dark Mode Support (optional) */
+@media (prefers-color-scheme: dark) {
+    .finance-tracker-pwa {
+        background: #121212;
+        color: #ffffff;
+    }
+
+    .finance-tracker-pwa .card,
+    .finance-tracker-pwa .transaction-card {
+        background: #1e1e1e;
+        box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+    }
+
+    .finance-tracker-pwa input,
+    .finance-tracker-pwa textarea,
+    .finance-tracker-pwa select {
+        background: #2c2c2c;
+        color: white;
+        border-color: #444;
+    }
+
+    .finance-tracker-pwa .btn-secondary {
+        background: #2c2c2c;
+        color: #ffffff;
+    }
+}

@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-06 21:22:12.950611",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sync_settings_section",
+  "auto_submit_documents",
+  "sync_interval",
+  "column_break_sync",
+  "cache_party_count",
+  "default_payment_account"
+ ],
+ "fields": [
+  {
+   "fieldname": "sync_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Sync Settings"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_submit_documents",
+   "fieldtype": "Check",
+   "label": "Auto-Submit Created Documents"
+  },
+  {
+   "default": "Every 15 minutes",
+   "fieldname": "sync_interval",
+   "fieldtype": "Select",
+   "label": "Auto-Sync Interval",
+   "options": "Manual\nEvery 5 minutes\nEvery 15 minutes\nEvery hour"
+  },
+  {
+   "fieldname": "column_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "50",
+   "fieldname": "cache_party_count",
+   "fieldtype": "Int",
+   "label": "Cached Parties Count"
+  },
+  {
+   "fieldname": "default_payment_account",
+   "fieldtype": "Link",
+   "label": "Default Payment Account",
+   "options": "Account"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-02-06 21:22:12.950611",
+ "modified_by": "Administrator",
+ "module": "Finance Tracker",
+ "name": "Tracker Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

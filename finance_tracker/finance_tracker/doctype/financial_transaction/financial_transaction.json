@@ -1,0 +1,232 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-02-06 21:21:59.205031",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transaction_type",
+  "date",
+  "naming_series",
+  "column_break_main",
+  "category",
+  "amount",
+  "section_break_party",
+  "column_break_pymt",
+  "payment_account",
+  "tax_amount",
+  "column_break_mnnu",
+  "receiving_account",
+  "section_break_details",
+  "description",
+  "receipt_image",
+  "column_break_tags",
+  "tags",
+  "section_break_reference",
+  "document_name_column",
+  "amended_from",
+  "customer",
+  "supplier",
+  "reference_document",
+  "dynamic_link_knor"
+ ],
+ "fields": [
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Type",
+   "options": "Income\nExpense\nTransfer",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "Now",
+   "fieldname": "date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Category",
+   "options": "Transaction Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_party",
+   "fieldtype": "Section Break",
+   "label": "Party & Payment"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_pymt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_account",
+   "fieldtype": "Link",
+   "label": "Payment Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "label": "Tax/VAT"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "receipt_image",
+   "fieldtype": "Attach Image",
+   "label": "Receipt/Proof"
+  },
+  {
+   "fieldname": "column_break_tags",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tags",
+   "fieldtype": "Data",
+   "label": "Tags"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "reference_doctype",
+   "fieldname": "section_break_reference",
+   "fieldtype": "Section Break",
+   "label": "Created Document"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Financial Transaction",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "FT-.MM.-.YY.-.####."
+  },
+  {
+   "fieldname": "column_break_mnnu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receiving_account",
+   "fieldtype": "Link",
+   "label": "Receiving Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "reference_document",
+   "fieldtype": "Link",
+   "label": "Reference Document",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "document_name_column",
+   "fieldtype": "Column Break",
+   "label": "Document Name"
+  },
+  {
+   "fieldname": "dynamic_link_knor",
+   "fieldtype": "Dynamic Link",
+   "label": "Document Name",
+   "options": "reference_document"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-02-07 22:27:03.105597",
+ "modified_by": "Administrator",
+ "module": "Finance Tracker",
+ "name": "Financial Transaction",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

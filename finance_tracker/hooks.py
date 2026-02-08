@@ -29,8 +29,15 @@ app_license = "mit"
 # app_include_js = "/assets/finance_tracker/js/finance_tracker.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/finance_tracker/css/finance_tracker.css"
-# web_include_js = "/assets/finance_tracker/js/finance_tracker.js"
+web_include_css = [
+    "/assets/finance_tracker/css/pwa_mobile.css"
+]
+
+web_include_js = [
+    "/assets/pwa_frappe/js/pwa.js",
+    "/assets/finance_tracker/js/offline_manager.js",
+    "/assets/finance_tracker/js/sync_manager.js"
+]
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "finance_tracker/public/scss/website"
